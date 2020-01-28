@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
-{
-    private Vector3 _nextPosition;
+{    
+    [SerializeField] private float _speed;
+    [SerializeField] private float _distanceNextPoint;
 
-    private void Start()
-    {
-        _nextPosition = Random.insideUnitCircle * 4;
-    }
+    private Vector3 _nextPosition;
 
     private void Update()
     {
@@ -18,10 +16,10 @@ public class EnemyMovement : MonoBehaviour
 
     private void FindRandomWay()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _nextPosition, 2 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _nextPosition, _speed * Time.deltaTime);
         if (transform.position == _nextPosition)
         {
-            _nextPosition = Random.insideUnitCircle * 4;
+            _nextPosition = Random.insideUnitCircle * _distanceNextPoint;
         }
     }
 }

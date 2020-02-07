@@ -7,40 +7,49 @@ public class Capture : MonoBehaviour
 {    
     [SerializeField] private List<Enemy> _enemyList;    
     [SerializeField] private UnityEvent _enemiesCaught;
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private AccelerationEndCounter _accelerationEndCounter;
 
     private int _numberEnimes;
 
     private void Start()
     {
         _numberEnimes = _enemyList.Count;
+        foreach (var enemy in _enemyList)
+        {
+            enemy.Deathing += () => OnDeath(enemy);
+        }
     }
 
     private void Update()
     {
-        CatchEnemy();
+        KillEnemy(_enemyList);
     }
 
-    public void CountCapturedEnemies()
+    private void AddKilledEnemies()
     {
         _numberEnimes -= 1;
         if (_numberEnimes == 0)
         {
             _enemiesCaught.Invoke();
         }
-    }
-
-    public void RemoveEnemy(Enemy enemy)
+    }  
+    
+    private void OnDeath(Enemy enemy)
     {
+        _playerMovement.IncreaseSpeed();
+        _accelerationEndCounter.LaunchTimer();
+        AddKilledEnemies();
         _enemyList.Remove(enemy);
     }
 
-    private void CatchEnemy()
+    private void KillEnemy(List<Enemy> enemyList)
     {
-        for (int i = _enemyList.Count - 1; i >= 0; i--)
+        foreach (var enemy in enemyList)
         {
-            if (Vector3.Distance(transform.position, _enemyList[i].transform.position) < 0.2f)
+            if (Vector3.Distance(transform.position, enemy.transform.position) < 0.2f)
             {
-                _enemyList[i].Death();
+                enemy.Death();                
             }
         }
     }    

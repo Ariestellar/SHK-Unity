@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FinischPanel : MonoBehaviour
+public class FinishPanel : MonoBehaviour
 {  
-    public void ShowFinischPanel()
+    public void ShowFinishPanel()
     {
         gameObject.SetActive(true);
     }

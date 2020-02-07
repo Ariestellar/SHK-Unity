@@ -16,9 +16,9 @@ public class PlayerMovement : MonoBehaviour
         _speed *= 2;               
     }
 
-    public void SlowDown()
+    public void SlowDown(int numberAccelerations)
     {
-        _speed /= 2;
+        _speed /= 2*numberAccelerations;
     }
 
     public void Stop()
@@ -28,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        transform.Translate(Input.GetAxis("Horizontal") * _speed * Time.deltaTime, Input.GetAxis("Vertical") * _speed * Time.deltaTime, 0);        
-    }    
+        transform.Translate(GetAxisMovement(Input.GetAxis("Horizontal")), GetAxisMovement(Input.GetAxis("Vertical")), 0);
+    }
+
+    private float GetAxisMovement(float axisDirection)
+    {
+        return axisDirection * _speed *Time.deltaTime;
+    }
 }

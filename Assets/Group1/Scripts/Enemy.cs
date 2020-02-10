@@ -5,17 +5,18 @@ using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private UnityEvent _deathing;
-    public event UnityAction Deathing
+    private event DeathHandler _deathing;
+
+    public delegate void DeathHandler(Enemy enemy);    
+    public event DeathHandler Deathing 
     {
-        add => _deathing.AddListener(value);
-        remove => _deathing.RemoveListener(value);
+        add => _deathing += value;
+        remove => _deathing -= value;
     }
-    
-    public void Death()
+
+    public void Death(Enemy enemy)
     {
-        _deathing.Invoke();
-        _deathing.RemoveAllListeners();
+        _deathing?.Invoke(enemy);
         Destroy(gameObject);
     }
 }

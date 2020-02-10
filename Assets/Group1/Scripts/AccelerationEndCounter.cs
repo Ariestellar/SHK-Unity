@@ -1,35 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-[RequireComponent(typeof(PlayerMovement))]
 public class AccelerationEndCounter : MonoBehaviour
-{   
-    [SerializeField] private float _time;
-    [SerializeField] private int _accelerationBonusCounter;    
+{ 
+    [SerializeField] private float _timeDefault;    
+    [SerializeField] private List <float> _listAccelerationBonusCounter;
+
+    private int _accelerationBonusCounter;
+    private float _currentTime;
+    private event SlowHandler _slowing;
+
+    public delegate void SlowHandler();
+    public event SlowHandler Slowing
+    {
+        add => _slowing += value;
+        remove => _slowing -= value;
+    }
 
     private void Update()
     {
-        CountTime();
+        FinishAcceleration();
     }
 
     public void LaunchTimer()
-    {
-        _accelerationBonusCounter += 1;
-        _time = 2;
+    {      
+        _accelerationBonusCounter += 1;        
+        if (_accelerationBonusCounter > 1)
+        {
+            _listAccelerationBonusCounter.Add(_currentTime);
+            _accelerationBonusCounter--;
+        }
+        _currentTime = _timeDefault;
     }
 
-    private void CountTime()
+    private void FinishAcceleration()
     {
-        if (_time > 0)
+        if (_currentTime > 0)
         {
-            _time -= Time.deltaTime;                   
+            _currentTime -= Time.deltaTime;            
         }
-        else if(_time < 0)
+        else if(_currentTime < 0)
         {
-            GetComponent<PlayerMovement>().SlowDown(_accelerationBonusCounter);
-            _time = 0;
-            _accelerationBonusCounter = 0;
+            _slowing?.Invoke();
+            
+            if (_listAccelerationBonusCounter.Count != 0)
+            {                
+                _currentTime = _listAccelerationBonusCounter[_listAccelerationBonusCounter.Count - 1];                
+                _listAccelerationBonusCounter.RemoveAt(_listAccelerationBonusCounter.Count - 1);                
+            }
+            else 
+            {
+                _currentTime = 0;                
+            }
         }
     }
 }

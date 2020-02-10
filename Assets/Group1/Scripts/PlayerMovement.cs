@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AccelerationEndCounter))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _speed;     
+    [SerializeField] private float _speed;
+
+    private void Awake()
+    {
+        GetComponent<AccelerationEndCounter>().Slowing += SlowDown;
+    }   
 
     private void Update()
     {
@@ -16,9 +22,9 @@ public class PlayerMovement : MonoBehaviour
         _speed *= 2;               
     }
 
-    public void SlowDown(int numberAccelerations)
-    {
-        _speed /= 2*numberAccelerations;
+    public void SlowDown()
+    {       
+        _speed /= 2;
     }
 
     public void Stop()
@@ -27,12 +33,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Move()
-    {
-        transform.Translate(GetAxisMovement(Input.GetAxis("Horizontal")), GetAxisMovement(Input.GetAxis("Vertical")), 0);
-    }
+    {        
+        var delta = GetMovementDelta(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        transform.Translate(delta);
+    }   
 
-    private float GetAxisMovement(float axisDirection)
+    private Vector3 GetMovementDelta(float xInput, float yInput)
     {
-        return axisDirection * _speed *Time.deltaTime;
+        return new Vector3(xInput, yInput, 0) * _speed * Time.deltaTime;
     }
 }

@@ -151,9 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf51d8f37807c84ba22a4c73b3a1416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deathing:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &141422277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2
-  _radiusNextPoint: 4
+  _movementRadius: 3
 --- !u!212 &141422278
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -529,9 +526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf51d8f37807c84ba22a4c73b3a1416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deathing:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1578050038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2
-  _radiusNextPoint: 4
+  _movementRadius: 3
 --- !u!212 &1578050039
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -640,9 +634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf51d8f37807c84ba22a4c73b3a1416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deathing:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1754708962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,7 +647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2
-  _radiusNextPoint: 4
+  _movementRadius: 3
 --- !u!212 &1754708963
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -872,8 +863,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4627d54e5a2cea040aa41edf7676dd71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _time: 0
+  _timeDefault: 2
   _accelerationBonusCounter: 0
+  _listAccelerationBonusCounter: []
 --- !u!1 &2083640146
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,9 +960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf51d8f37807c84ba22a4c73b3a1416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deathing:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2083640150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,4 +973,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2
-  _radiusNextPoint: 4
+  _movementRadius: 3

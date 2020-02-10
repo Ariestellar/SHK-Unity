@@ -10,14 +10,11 @@ public class Capture : MonoBehaviour
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private AccelerationEndCounter _accelerationEndCounter;
 
-    private int _numberEnimes;
-
     private void Start()
-    {
-        _numberEnimes = _enemyList.Count;
+    {        
         foreach (var enemy in _enemyList)
-        {
-            enemy.Deathing += () => OnDeath(enemy);
+        {  
+            enemy.Deathing += OnDeath;
         }
     }
 
@@ -25,22 +22,13 @@ public class Capture : MonoBehaviour
     {
         KillEnemy(_enemyList);
     }
-
-    private void AddKilledEnemies()
-    {
-        _numberEnimes -= 1;
-        if (_numberEnimes == 0)
-        {
-            _enemiesCaught.Invoke();
-        }
-    }  
     
     private void OnDeath(Enemy enemy)
     {
         _playerMovement.IncreaseSpeed();
-        _accelerationEndCounter.LaunchTimer();
-        AddKilledEnemies();
+        _accelerationEndCounter.LaunchTimer();        
         _enemyList.Remove(enemy);
+        enemy.Deathing -= OnDeath;
     }
 
     private void KillEnemy(List<Enemy> enemyList)
@@ -49,8 +37,12 @@ public class Capture : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, enemy.transform.position) < 0.2f)
             {
-                enemy.Death();                
-            }
+                enemy.Death(enemy);
+                if (enemyList.Count == 0)
+                {
+                    _enemiesCaught.Invoke();
+                }
+            }            
         }
     }    
 }

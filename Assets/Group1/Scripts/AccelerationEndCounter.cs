@@ -5,55 +5,36 @@ using UnityEngine.Events;
 
 public class AccelerationEndCounter : MonoBehaviour
 { 
-    [SerializeField] private float _timeDefault;    
-    [SerializeField] private List <float> _listAccelerationBonusCounter;
+    [SerializeField] private float _bonusExpirationTime;  
+    [SerializeField] private UnityEvent _slowing;
+    [SerializeField] private List<float> _currentRunnungBonusTimers;
 
-    private int _accelerationBonusCounter;
-    private float _currentTime;
-    private event SlowHandler _slowing;
-
-    public delegate void SlowHandler();
-    public event SlowHandler Slowing
-    {
-        add => _slowing += value;
-        remove => _slowing -= value;
-    }
+    private float _currentTime;   
 
     private void Update()
     {
-        FinishAcceleration();
+        ReduceTimersAllRunnungBonuses();
     }
 
     public void LaunchTimer()
-    {      
-        _accelerationBonusCounter += 1;        
-        if (_accelerationBonusCounter > 1)
-        {
-            _listAccelerationBonusCounter.Add(_currentTime);
-            _accelerationBonusCounter--;
-        }
-        _currentTime = _timeDefault;
+    {        
+        _currentTime = _bonusExpirationTime;
+        _currentRunnungBonusTimers.Add(_currentTime);
     }
 
-    private void FinishAcceleration()
-    {
-        if (_currentTime > 0)
+    private void ReduceTimersAllRunnungBonuses()
+    {       
+        for (int i = 0; i < _currentRunnungBonusTimers.Count; i++)
         {
-            _currentTime -= Time.deltaTime;            
-        }
-        else if(_currentTime < 0)
-        {
-            _slowing?.Invoke();
-            
-            if (_listAccelerationBonusCounter.Count != 0)
-            {                
-                _currentTime = _listAccelerationBonusCounter[_listAccelerationBonusCounter.Count - 1];                
-                _listAccelerationBonusCounter.RemoveAt(_listAccelerationBonusCounter.Count - 1);                
-            }
-            else 
+            if (_currentRunnungBonusTimers[i] != 0)
             {
-                _currentTime = 0;                
-            }
-        }
+                _currentRunnungBonusTimers[i] -= Time.deltaTime;
+                if (_currentRunnungBonusTimers[i] < 0)
+                {
+                    _slowing?.Invoke();
+                    _currentRunnungBonusTimers.RemoveAt(i);
+                }
+            }            
+        } 
     }
 }

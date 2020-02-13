@@ -7,11 +7,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
-    private void Awake()
-    {
-        GetComponent<AccelerationEndCounter>().Slowing += SlowDown;
-    }   
-
     private void Update()
     {
         Move();        

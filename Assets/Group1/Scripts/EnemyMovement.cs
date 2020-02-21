@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
-        _targetPosition = GetRandomTargetPosition(_movementRadius);
+        _targetPosition = GetNewPosition(_movementRadius);
     }
 
     private void Update()
@@ -24,11 +24,11 @@ public class EnemyMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
         if (transform.position == _targetPosition)
         {            
-            _targetPosition = GetRandomTargetPosition(_movementRadius);
+            _targetPosition = GetNewPosition(_movementRadius);
         }
     }
 
-    private Vector3 GetRandomTargetPosition(float radius)
+    private Vector3 GetNewPosition(float radius)
     { 
         return Random.insideUnitCircle * radius;
     }

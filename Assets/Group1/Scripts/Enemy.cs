@@ -1,22 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour
+public class Enemy : ObjectsToCapture
 {
-    private event DeathHandler _deathing;
+    [SerializeField] private EnemyCounter _enemyCounter;
 
-    public delegate void DeathHandler(Enemy enemy);    
-    public event DeathHandler Deathing 
+    public override void Catch()
     {
-        add => _deathing += value;
-        remove => _deathing -= value;
-    }
-
-    public void Death(Enemy enemy)
-    {
-        _deathing?.Invoke(enemy);
-        Destroy(gameObject);
+        _enemyCounter.Decrease();
+        Destruction();
     }
 }

@@ -5,43 +5,21 @@ using UnityEngine.Events;
 
 public class Capture : MonoBehaviour
 {    
-    [SerializeField] private List<Enemy> _enemyList;    
-    [SerializeField] private UnityEvent _enemiesCaught;
-    [SerializeField] private PlayerMovement _playerMovement;
-    [SerializeField] private AccelerationEndCounter _accelerationEndCounter;
-
-    private void Start()
-    {        
-        foreach (var enemy in _enemyList)
-        {  
-            enemy.Deathing += OnDeath;
-        }
-    }
+    [SerializeField] private List<ObjectsToCapture> _gameObjects;  
 
     private void Update()
     {
-        KillEnemy(_enemyList);
+        CheckingDistanceToObject(_gameObjects);
     }
     
-    private void OnDeath(Enemy enemy)
+    private void CheckingDistanceToObject(List<ObjectsToCapture> gameObjectList)
     {
-        _playerMovement.IncreaseSpeed();
-        _accelerationEndCounter.LaunchTimer();        
-        _enemyList.Remove(enemy);
-        enemy.Deathing -= OnDeath;
-    }
-
-    private void KillEnemy(List<Enemy> enemyList)
-    {
-        foreach (var enemy in enemyList)
+        foreach (var gameObject in gameObjectList)
         {
-            if (Vector3.Distance(transform.position, enemy.transform.position) < 0.2f)
+            if (Vector3.Distance(transform.position, gameObject.transform.position) < 0.2f)
             {
-                enemy.Death(enemy);
-                if (enemyList.Count == 0)
-                {
-                    _enemiesCaught.Invoke();
-                }
+                gameObject.Catch();
+                gameObjectList.Remove(gameObject);
             }            
         }
     }    
